@@ -1,0 +1,38 @@
+/* 多重join */
+SELECT DISTINCT
+    c.customerid,
+    c.companyname,
+    /*o.OrderID,*/
+    od.productid,
+    p.productname,
+    sum(od.quantity)
+FROM
+    customers AS c
+JOIN Orders AS o
+	ON c.CustomerID = o.CustomerID
+JOIN `order details` as od 
+	on  o.OrderID = od.orderid
+join products as p 
+	on od.productid = p.productid  
+WHERE c.CustomerID LIKE 'A%'
+GROUP by c.CustomerID, c.CompanyName, p.ProductName , productid
+ORDER BY `customerid` ,productid
+
+index customers.CustomerID
+      products.productid
+      orders.OrderID
+      order details.orderid    
+
+/*子查詢作為表單使用*/
+SELECT * from 
+	(select * FROM orders ORDER BY orderDate DESC LIMIT 10) as sub 
+    order by sub.orderdate
+/*建立tableㄉ部分*/
+create table friends
+(
+  fid int auto_increment not null ,
+  cname char(10) not null,
+  ename varchar(30) null,
+  tel varchar(30) null,
+  primary key (fid, cname)/*額外指定主鍵 可以指定兩個*/
+);
