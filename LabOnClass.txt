@@ -1,6 +1,6 @@
 /* macOS MAMP終端機連MySQL */
 /Applications/MAMP/Library/bin/mysql --host=localhost -uroot -proot
-
+show variables like ''; --查變數
 /* 多重join */
 SELECT DISTINCT
     c.customerid,
@@ -98,7 +98,7 @@ create unique index idx_company on customer(customerid);
 insert into customer values(4,'FW');
 drop index idx_company on customer;
 
-/* Mylsam engine Merge*/
+/* Mylsam engine Merge */
 create table t1
 (
   id int auto_increment primary key,
@@ -129,3 +129,41 @@ set names big5;
 -- user:使用者 db:資料庫和使用者權限 tables_priv:???
 
 flush privileges--讓mysql馬上重讀權限資料
+
+/* 08/07 dataType */
+-- 1.varchar存中文？可以 :>
+-- 2.int(n) n不會影響實際能存的整數大小(還是可以存11位)
+-- 3.enum('y','n') 1=y , 2=n , 0=error
+-- 4.one hot coding
+
+/* tran 
+ -- dirty read讀到未commit的資料
+
+ -- lock:
+   -lock table/s 'tableName' read/write
+   -read lock:可讀不能寫
+   -write lock：不可讀寫, 權限大於read
+A：Atomicity（原子性）
+C：Consistency（一致性）
+I：Isolation（隔離性）
+D：Durability（持久性）
+
+ */
+
+ /* backup 
+
+ /Applications/MAMP/Library/bin/mysqldump --host=localhost -uroot -proot db2 >Desktop/db2_bak.txt 
+ 
+select categoryId, categoryName 
+  into outfile 'Desktop/lab.txt' 
+  fields terminated by ',' op
+  lines terminated by '\r\n'
+  from categories;
+
+load data infile 'c:\\temp\\lab.txt'
+  ignore
+  into table categories
+  LINES TERMINATED BY '\r\n';
+
+select * from categories;
+ */
